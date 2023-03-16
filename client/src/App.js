@@ -6,9 +6,9 @@ import Signup from './components/Signup'
 
 const App = () => (
   <Routes>
-    <Route exact path='/login' element={<Login />} />
-    <Route exact path='/signup' element={<Signup />} />
-    <Route exact path='/' element={<Home />} />
+    <Route path='/' element={<Home />} />
+    <Route path='/login' element={<Login />} />
+    <Route path='/signup' element={<Signup />} />
   </Routes>
 )
 

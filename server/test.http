@@ -26,9 +26,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1he
 Content-Type: application/json
 
 {
-  "todoId": "uuidv666666",
-  "todo": "complete the projects and get food",
-  "taskDone": true
+  "todoId": "uuidv78",
+  "todo": "Do one thing at a time",
+  "taskDone": false
 }
 
 ###

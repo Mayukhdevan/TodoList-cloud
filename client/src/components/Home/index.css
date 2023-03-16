@@ -1,21 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick+No+Bills:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 .home-container {
-  
+  padding: 1rem;
+  background-color: #343d47;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+}
+.app-title {
+  font-family: 'Stick No Bills';
+  text-align: center;
+  position: relative;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  top: -3.5rem;
+  font-size: 150px;
+  letter-spacing: 0.4rem;
+  font-weight: 800;
+  background-clip: text;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.63) 0%,
+    rgba(12, 38, 46, 0) 80%
+  );
+  background: -webkit-linear-gradient(
+    (180deg, rgba(0, 0, 0, 0.63) 0%, rgba(12, 38, 46, 0) 100%)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.responsive-container {
+  position: relative;
+  width: 100%;
+  max-width: 768px;
+}
+
+/* Animation setion */
+.animation-container {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .logout-container {
-  
+  position: relative;
+  padding: 1rem 3rem 1rem 0.6rem;
+  background-color: #6b7888;
+  border-radius: 0.7rem;
+  z-index: 1;
+  /* overflow: hidden; */
+}
+/* .logout-container {
+  animation: expand .5s ease-out forwards;
+  transform-origin: right;
+} */
+@keyframes expand {
+  to {
+    gap: unset;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    transform: scale(0);
+    padding-bottom: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 100%;
+  }
 }
 .logout-btn {
-  
+  border: none;
+  outline: none;
+  background-color: #d9d9d9;
+  color: #343d47;
+  font-size: 1rem;
+  padding: 0.5rem calc(1rem);
+  border-radius: 100px;
+  font-family: 'Roboto';
+  font-weight: 700;
 }
+/* .logout-btn {
+  animation: collapse 1s ease-in forwards;
+} */
+@keyframes collapse {
+  0% {
+    position: relative;
+    z-index: -1;
+    pointer-events: none;
+  }
+  50% {
+    opacity: 0;
+  }
+  to {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+/* Animation section end */
+
 .settings-btn {
-  
+  position: absolute;
+  top: 23%;
+  right: 5%;
+  z-index: 6;
+  background-color: #6b7888;
+  border: none;
+  border-radius: 100%;
+  padding: 0.3rem 0.2rem 0.1rem 0.3rem;
+  outline: none;
+}
+/* .settings-btn {
+  animation: rotate 0.5s ease-out alternate forwards;
+} */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
 }
 .text-input {
-  
 }
 .icons {
-  
+  color: #343d47;
+  height: 27px;
+  width: 27px;
 }
 .edit-btn {
-  
 }

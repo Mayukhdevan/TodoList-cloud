@@ -117,7 +117,6 @@ app.post('/login/', async (req, res) => {
 // GET todo
 app.get('/', authenticateToken, async (req, res) => {
   const username = req.username
-  console.log(username)
 
   const getTodoQuery = `
     SELECT * FROM
