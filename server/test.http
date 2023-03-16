@@ -1,0 +1,45 @@
+POST http://localhost:8000/register/
+Content-Type: application/json
+
+{ 
+  "username": "mayukh_devan",
+  "password": "mayukh@555",
+  "name": "Mayukh Devan",
+  "gender": "male"
+}
+###
+POST http://localhost:8000/login/
+Content-Type: application/json
+
+{
+  "username": "mayukh_devan",
+  "password": "mayukh@555"
+}
+
+###
+GET http://localhost:8000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk
+
+###
+POST http://localhost:8000/add/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk
+Content-Type: application/json
+
+{
+  "todoId": "uuidv666666",
+  "todo": "complete the projects and get food",
+  "taskDone": true
+}
+
+###
+DELETE http://localhost:8000/todo/uuidv4/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk
+
+###
+PUT http://localhost:8000/todo/uuidv4/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk
+Content-Type: application/json
+
+{
+  "taskDone": true
+}

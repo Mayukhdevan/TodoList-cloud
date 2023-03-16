@@ -1,0 +1,127 @@
+.login-bg-container {
+  background-color: rgb(246, 246, 246);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-responsive-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 1110px;
+  height: 100vh;
+}
+
+.login-image {
+  display: none;
+}
+
+.login-logo-image {
+  width: 82px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 10px 10px 10px 1px rgba(7, 7, 7, 0.08), -10px -10px 10px 1px white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 456px;
+}
+
+.login-heading {
+  font-family: 'Lobster';
+  font-size: 1.25rem;
+  font-weight: 500;
+  background: -webkit-linear-gradient(
+    left,
+    #cf006e 56%,
+    #1472ff 56%,
+    #ff5e36 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.input-label {
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  color: #262626;
+}
+
+.username-input-field,
+.password-input-field {
+  font-size: 14px;
+  height: 40px;
+  border: none;
+  background-color: #eeeeee;
+  box-shadow: 5px 5px 10px 1px rgba(7, 7, 7, 0.08), -5px -5px 10px 1px white;
+  color: #262626;
+  border-radius: 15px;
+  margin-top: 5px;
+  padding: 8px 16px 8px 16px;
+  outline: none;
+}
+
+.login-button {
+  font-weight: bold;
+  font-size: 14px;
+  color: #4094ef;
+  margin-top: 25px;
+  margin-bottom: 2px;
+  background-color: rgb(245, 245, 245);
+  box-shadow: 5px 5px 10px 1px rgba(7, 7, 7, 0.08), -5px -5px 10px 1px white;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.error-message {
+  align-self: start;
+  font-size: 12px;
+  margin-top: 3px;
+  margin-bottom: 0px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ef4444;
+}
+
+@media screen and (min-width: 768px) {
+  .login-bg-container {
+    padding: 0 3rem;
+  }
+  .login-responsive-container {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .login-image {
+    display: block;
+    width: 50%;
+    max-width: 524px;
+    flex-shrink: 1;
+    margin-right: 20px;
+  }
+  .form-container {
+    background-color: rgb(245, 245, 245);
+    max-width: 456px;
+    box-shadow: inset 10px 10px 10px 1px rgba(7, 7, 7, 0.08),
+      inset -10px -10px 10px 1px white;
+    padding: 64px 48px 64px 48px;
+  }
+}
