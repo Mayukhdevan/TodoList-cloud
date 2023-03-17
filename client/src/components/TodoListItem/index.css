@@ -1,0 +1,64 @@
+.todo-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(217, 217, 217, 0.01);
+  box-shadow: 8px 6px 14px -2px rgba(0, 0, 0, 0.25), -9px -9px 14px -1px #3a444e;
+  border-radius: 17px;
+  padding: 1rem 2rem;
+  transition: all 0.1s ease;
+}
+.todo-item:hover {
+  transform: scale(1.02);
+}
+.todo-item:first-child {
+  margin-top: auto;
+}
+.todo-text-container {
+  overflow-y: hidden;
+  width: 80%;
+}
+.todo-text {
+  position: relative;
+  word-wrap: break-word;
+  display: inline-flex;
+  color: #9f9f9f;
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 1rem;
+  z-index: 100;
+}
+.todo-text::after {
+  transition: all 0.5s ease;
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  inset: 0;
+  transform: scaleX(0);
+  top: 50%;
+  border-top: 2px solid rgba(0, 0, 0, 0.603);
+  transform-origin: left;
+}
+.checked-class::after {
+  transform: scaleX(1);
+  transform: scaleX(100%);
+}
+
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.delete-icon {
+  color: #191d21;
+  height: 24px;
+  width: 25px;
+}
+.delete-btn:hover .delete-icon {
+  color: #20262b;
+}

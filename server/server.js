@@ -37,13 +37,13 @@ const authenticateToken = (req, res, next) => {
   if (jwtToken === undefined) {
     // Token not provided
     res.status(401)
-    res.send('Invalid JWT Token')
+    res.send({ err_msg: 'Invalid JWT Token' })
   } else {
     jwt.verify(jwtToken, 'MY_SECRET_TOKEN', async (error, payload) => {
       if (error) {
         // Incorrect token
         res.status(401)
-        res.send('Invalid JWT Token')
+        res.send({ err_msg: 'Invalid JWT Token' })
       } else {
         req.username = payload.username // Pass data to the next handler with req obj
         next() // Call the next handler or middleware
@@ -63,7 +63,7 @@ app.post('/register', async (req, res) => {
     if (password.length < 6) {
       // If pw length less than 6 char
       res.status(400)
-      res.send('Password is too short')
+      res.send({ err_msg: 'Password is too short' })
     } else {
       // If Everything goes well
       const createUserQuery = `
@@ -77,24 +77,25 @@ app.post('/register', async (req, res) => {
               '${gender}'
             )`
       await db.run(createUserQuery)
-      res.send(`User created successfully`)
+      res.send({ err_msg: 'User created successfully' })
     }
   } else {
     //If user already exists
     res.status(400)
-    res.send('User already exists')
+    res.send({ err_msg: 'User already exists' })
   }
 })
 
 //User Login API
 app.post('/login/', async (req, res) => {
   const { username, password } = req.body
+  console.log(req.body)
   const selectUserQuery = `SELECT * FROM user WHERE username = '${username}'`
   const dbUser = await db.get(selectUserQuery) // Check user in db
   if (dbUser === undefined) {
     // If user doesn't have an A/C
     res.status(400)
-    res.send('Invalid user')
+    res.send({ err_msg: 'Invalid user' })
   } else {
     // If user has an A/C
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password)
@@ -109,7 +110,7 @@ app.post('/login/', async (req, res) => {
     } else {
       // Incorrect pw
       res.status(400)
-      res.send('Invalid password')
+      res.send({ err_msg: 'Invalid password' })
     }
   }
 })
@@ -144,7 +145,7 @@ app.post('/add/', authenticateToken, async (req, res) => {
       );
   `
   await db.run(addTodoQuery)
-  res.send('Added todo successfully')
+  res.send({ message: 'Added todo successfully' })
 })
 
 // DELETE TODO
@@ -161,12 +162,9 @@ app.delete('/todo/:todoId', authenticateToken, async (req, res) => {
       username = "${username}";
   `
   const deleteTodo = await db.run(deleteTodoQuery)
-  console.log(deleteTodo)
   if (deleteTodo.changes === 0) {
     res.status(401)
-    res.send('Invalid Request')
-  } else {
-    res.send('Todo Deleted!')
+    res.send({ err_msg: 'Invalid Request' })
   }
 })
 
@@ -189,9 +187,9 @@ app.put('/todo/:todoId', authenticateToken, async (req, res) => {
 
   if (dbResponse.changes === 0) {
     res.status(400)
-    res.send('Todo not found!')
+    res.send({ message: 'Todo not found!' })
   }
-  res.send('Todo updated succesfully!')
+  res.send({ message: 'Todo updated succesfully!' })
 })
 
 module.exports = app

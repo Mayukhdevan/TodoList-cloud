@@ -1,19 +1,32 @@
 import { Component } from 'react'
 import Cookies from 'js-cookie'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import './index.css'
 
 class Login extends Component {
-  state = {
-    username: '',
-    password: '',
-    showSubmitError: false,
-    errorMsg: '',
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: '',
+      username: '',
+      password: '',
+      gender: 'male',
+      showSubmitError: false,
+      errorMsg: '',
+      showSubmitSuccess: false,
+      successMsg: '',
+      signUp: false,
+      redirect: false,
+    }
   }
 
   onChangeUsername = event => {
     this.setState({ username: event.target.value })
+  }
+
+  onChangeName = event => {
+    this.setState({ name: event.target.value })
   }
 
   onChangePassword = event => {
@@ -21,41 +34,38 @@ class Login extends Component {
   }
 
   onSubmitSuccess = jwtToken => {
-    const { history } = this.props
-
     Cookies.set('jwt_token', jwtToken, {
       expires: 30,
       path: '/',
     })
-    history.replace('/')
+
+    this.setState(prevState => ({ redirect: !prevState.redirect }))
   }
 
-  // onSubmitFailure = errorMsg => {
-  //   this.setState({ showSubmitError: true, errorMsg })
-  // }
+  onSubmitFailure = errorMsg => {
+    this.setState({ showSubmitError: true, errorMsg })
+  }
 
   submitForm = async event => {
     event.preventDefault()
-    let { username, password } = this.state
+    const { username, password } = this.state
 
     const userDetails = { username, password }
-    // const url = 'https://apis.ccbp.in/login'
-    // const options = {
-    //   method: 'POST',
-    //   body: JSON.stringify(userDetails),
-    // }
-    // const response = await fetch(url, options)
-    // const data = await response.json()
-    // if (response.ok === true) {
-    //   this.onSubmitSuccess(data.jwt_token)
-    // } else {
-    //   this.onSubmitFailure(data.error_msg)
-    // }
-  }
-
-  onSignup = () => {
-    const { history } = this.props
-    history.push('./signup')
+    const url = 'http://localhost:8000/login/'
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+    }
+    const response = await fetch(url, options)
+    const data = await response.json()
+    if (response.ok === true) {
+      this.onSubmitSuccess(data.jwtToken)
+    } else {
+      this.onSubmitFailure(data.err_msg)
+    }
   }
 
   renderPasswordField = () => {
@@ -63,7 +73,7 @@ class Login extends Component {
     return (
       <>
         <label className='input-label' htmlFor='password'>
-          PASSWORD
+          Password
         </label>
         <input
           type='password'
@@ -76,12 +86,30 @@ class Login extends Component {
     )
   }
 
+  renderNameField = () => {
+    const { name } = this.state
+    return (
+      <>
+        <label className='input-label' htmlFor='username'>
+          Name
+        </label>
+        <input
+          type='text'
+          id='name'
+          className='username-input-field'
+          value={name}
+          onChange={this.onChangeName}
+        />
+      </>
+    )
+  }
+
   renderUsernameField = () => {
     const { username } = this.state
     return (
       <>
         <label className='input-label' htmlFor='username'>
-          USERNAME
+          Username
         </label>
         <input
           type='text'
@@ -94,37 +122,144 @@ class Login extends Component {
     )
   }
 
-  render() {
+  handleSignUp = data => {
+    const msg = data.message
+    console.log(msg)
+
+    this.setState({
+      showSubmitError: false,
+      errorMsg: '',
+      showSubmitSuccess: true,
+      successMsg: msg,
+    })
+  }
+
+  registerUser = async event => {
+    event.preventDefault()
+    const { name, gender, username, password } = this.state
+
+    const userDetails = { username, password, name, gender }
+    const url = 'http://localhost:8000/register/'
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+    }
+    const response = await fetch(url, options)
+    const data = await response.json()
+    if (response.ok === true) {
+      this.handleSignUp(data)
+    } else {
+      this.onSubmitFailure(data.err_msg)
+    }
+  }
+
+  renderSignUp = () => {
+    const { showSubmitError, errorMsg, showSubmitSuccess, successMsg } =
+      this.state
+
+    console.log(showSubmitSuccess)
+
+    return (
+      <form className='form' onSubmit={this.registerUser}>
+        <h1 className='login-heading'>TODO LIST</h1>
+        <div className='input-container'>{this.renderNameField()}</div>
+        <div className='input-container'>{this.renderUsernameField()}</div>
+        <div className='input-container'>{this.renderPasswordField()}</div>
+        <div className='radio-container'>
+          <div className='radio-field'>
+            <input
+              className='radio-inputs'
+              type='radio'
+              id='male'
+              value='male'
+              name='gender'
+              onChange={e => this.setState({ gender: e.target.value })}
+            />
+            <label className='gender-input-label' htmlFor='male'>
+              Male
+            </label>
+          </div>
+          <div className='radio-field'>
+            <input
+              className='radio-inputs'
+              type='radio'
+              id='female'
+              value='female'
+              name='gender'
+              onChange={e => this.setState({ gender: e.target.value })}
+            />
+            <label className='gender-input-label' htmlFor='female'>
+              Female
+            </label>
+          </div>
+        </div>
+        <button type='submit' className='login-button'>
+          Sign Up
+        </button>
+        <p className='signup-instead'>
+          Already have an account?{' '}
+          <span onClick={this.toggleSignView}>Login!</span>
+        </p>
+        {showSubmitSuccess && <p className='success-message'>{successMsg}</p>}
+        {showSubmitError && <p className='error-message'>*{errorMsg}</p>}
+      </form>
+    )
+  }
+
+  renderSignIn = () => {
     const { showSubmitError, errorMsg } = this.state
+
+    return (
+      <form className='form' onSubmit={this.submitForm}>
+        <h1 className='login-heading'>TODO LIST</h1>
+        <div className='input-container'>{this.renderUsernameField()}</div>
+        <div className='input-container'>{this.renderPasswordField()}</div>
+        <button type='submit' className='login-button'>
+          Login
+        </button>
+        <p className='signup-instead'>
+          Don't have an account?{' '}
+          <span onClick={this.toggleSignView}>Sign up instead!</span>
+        </p>
+        {showSubmitError && <p className='error-message'>*{errorMsg}</p>}
+      </form>
+    )
+  }
+
+  toggleSignView = () =>
+    this.setState(prevState => ({ signUp: !prevState.signUp }))
+
+  render() {
+    const { signUp } = this.state
+
+    const signUpCls = signUp ? 'toggle-signup' : ''
+
     const jwtToken = Cookies.get('jwt_token')
-    if (jwtToken !== undefined) {
+    if (typeof jwtToken !== 'undefined') {
       return <Navigate to='/' />
     }
     return (
       <div className='login-bg-container'>
         <div className='login-responsive-container'>
           <img
-            src='https://res.cloudinary.com/dem9u6dox/image/upload/v1677392497/InstaShareAssets/Login/Layer_2_agpl9x.png'
+            src='undraw_sign__up_nm4k.svg'
             className='login-image'
             alt='website login'
           />
-          <form className='form-container' onSubmit={this.submitForm}>
-            <img
-              src='https://res.cloudinary.com/dem9u6dox/image/upload/v1677392496/InstaShareAssets/Login/Standard_Collection_8_sahaye.png'
-              className='login-logo-image'
-              alt='website logo'
-            />
-            <h1 className='login-heading'>TODO LIST</h1>
-            <div className='input-container'>{this.renderUsernameField()}</div>
-            <div className='input-container'>{this.renderPasswordField()}</div>
-            <button type='submit' className='login-button'>
-              Login
+          <div className='form-container'>
+            <button
+              type='button'
+              className={`toggle-sign-view-btn ${signUpCls}`}
+              onClick={this.toggleSignView}
+            >
+              <span className='login-span'>Login</span>
+              <span className='signup-span'>Sign Up</span>
             </button>
-            <p className='signup-instead'>
-              Don't have an account? <Link to='/signup'>Sign up instead!</Link>
-            </p>
-            {showSubmitError && <p className='error-message'>*{errorMsg}</p>}
-          </form>
+            {signUp ? this.renderSignUp() : this.renderSignIn()}
+          </div>
         </div>
       </div>
     )

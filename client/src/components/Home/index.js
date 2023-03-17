@@ -1,7 +1,10 @@
 import { Component } from 'react'
+import Cookies from 'js-cookie'
+import { Navigate } from 'react-router-dom'
 import { MdSettings } from 'react-icons/md'
 import { v4 as uuidv4 } from 'uuid'
 import TodoListItem from '../TodoListItem'
+import NoTodo from '../NoTodo'
 import { Icon } from '@iconify/react'
 import './index.css'
 
@@ -9,6 +12,9 @@ class Home extends Component {
   state = {
     textInput: '',
     todoList: [],
+    isSettingsExpanded: false,
+    isInputFocused: false,
+    logout: false,
   }
 
   componentDidMount() {
@@ -21,24 +27,22 @@ class Home extends Component {
   }
 
   updateState = data => {
-    console.log(data)
     const updatedData = data.map(eachItem => ({
       username: eachItem.username,
       todoId: eachItem.todo_id,
       todo: eachItem.todo,
-      taskDone: eachItem.task_done,
+      taskDone: eachItem.task_done === 1 ? true : false,
     }))
-
     this.setState({ todoList: updatedData })
   }
 
   fetchTodoList = async () => {
-    const jwtToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk'
+    const jwtToken = Cookies.get('jwt_token')
 
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
       },
     }
     const response = await fetch('http://localhost:8000/', options)
@@ -53,8 +57,7 @@ class Home extends Component {
   onInput = e => this.setState({ textInput: e.target.value })
 
   updateDb = async newTodo => {
-    const jwtToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk'
+    const jwtToken = Cookies.get('jwt_token')
 
     const options = {
       headers: {
@@ -65,14 +68,7 @@ class Home extends Component {
       body: JSON.stringify(newTodo),
     }
 
-    const response = await fetch('http://localhost:8000/add', options)
-    const data = await response.json()
-
-    if (response.ok) {
-      console.log(data)
-    } else {
-      console.log(data)
-    }
+    await fetch('http://localhost:8000/add', options)
   }
 
   onSave = e => {
@@ -90,12 +86,12 @@ class Home extends Component {
   }
 
   deleteFromDb = async id => {
-    const jwtToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk'
+    const jwtToken = Cookies.get('jwt_token')
 
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
       },
       method: 'DELETE',
     }
@@ -116,8 +112,7 @@ class Home extends Component {
   }
 
   checkUpdateDb = async (updatedTaskDone, id) => {
-    const jwtToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heXVraF9kZXZhbiIsImlhdCI6MTY3ODk3MTY1OX0.xOXBuccSYC7Ew838C-ECJ0IKkUlGhNd88ydg6nFCSVk'
+    const jwtToken = Cookies.get('jwt_token')
 
     const options = {
       headers: {
@@ -128,9 +123,7 @@ class Home extends Component {
       body: JSON.stringify(updatedTaskDone),
     }
 
-    const response = await fetch(`http://localhost:8000/todo/${id}`, options)
-    const data = await response.json()
-    console.log(data)
+    await fetch(`http://localhost:8000/todo/${id}`, options)
   }
 
   onCheckTodo = id => {
@@ -150,22 +143,56 @@ class Home extends Component {
     }))
   }
 
+  onLogout = () => {
+    Cookies.remove('jwt_token')
+    this.setState({ logout: true })
+  }
+
   render() {
-    const { textInput, todoList } = this.state
+    if (Cookies.get('jwt_token') === undefined) {
+      return <Navigate to='/login' replace={true} />
+    }
+
+    const { textInput, todoList, isSettingsExpanded, isInputFocused } =
+      this.state
+
+    const inputFocusCls = isInputFocused ? 'expand-textarea' : ''
+    const logoutConteinerCls = isSettingsExpanded
+      ? 'logout-container-expand'
+      : ''
+    const logoutBtnCls = isSettingsExpanded ? 'logout-btn-expand' : ''
+    const logoutSettingsCls = isSettingsExpanded ? 'settings-btn-expand' : ''
 
     return (
       <div className='home-container'>
         <div className='responsive-container'>
           <h1 className='app-title'>TODO LIST</h1>
-          <div className='animation-container'>
-            <div className='logout-container'>
-              <button className='logout-btn'>Logout</button>
-            </div>
-            <button className='settings-btn'>
+
+          <div className={`logout-container ${logoutConteinerCls}`}>
+            <button
+              className={`logout-btn ${logoutBtnCls}`}
+              type='button'
+              onClick={this.onLogout}
+            >
+              Logout
+            </button>
+            <button
+              className={`settings-btn ${logoutSettingsCls}`}
+              type='button'
+              onClick={() =>
+                this.setState(prevState => ({
+                  isSettingsExpanded: !prevState.isSettingsExpanded,
+                }))
+              }
+            >
               <MdSettings className='icons' />
             </button>
           </div>
-          <ul>
+        </div>
+        {todoList.length === 0 ? (
+          <NoTodo />
+        ) : (
+          <ul className='todo-list-container'>
             {todoList.map(eachItem => (
               <TodoListItem
                 key={eachItem.todoId}
@@ -175,9 +202,13 @@ class Home extends Component {
               />
             ))}
           </ul>
+        )}
 
-          <div>
+        <div className='editor-section'>
+          <div className={`text-input-container ${inputFocusCls}`}>
             <input
+              onFocus={() => this.setState({ isInputFocused: true })}
+              onBlur={() => this.setState({ isInputFocused: false })}
               className='text-input'
               type='text'
               placeholder='Write something...'
@@ -185,9 +216,15 @@ class Home extends Component {
               onKeyDown={e => e.key === 'Enter' && this.onSave(e)}
               value={textInput}
             />
-            <Icon icon='jam:write-f' className='icons' />
+            <button
+              className='edit-btn'
+              type='button'
+              onClick={this.focusTextArea}
+            >
+              <Icon icon='jam:write-f' className='icons' />
+            </button>
           </div>
-          <button className='edit-btn' type='submit' onClick={this.onSave}>
+          <button className='save-btn' type='submit' onClick={this.onSave}>
             <Icon icon='ic:baseline-save-as' className='icons' />
           </button>
         </div>

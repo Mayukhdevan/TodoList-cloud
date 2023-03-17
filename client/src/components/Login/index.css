@@ -1,5 +1,5 @@
 .login-bg-container {
-  background-color: rgb(246, 246, 246);
+  background-color: #343d47;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,30 +18,74 @@
   display: none;
 }
 
-.login-logo-image {
-  width: 82px;
-}
-
 .form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 10px 10px 10px 1px rgba(7, 7, 7, 0.08), -10px -10px 10px 1px white;
+  box-shadow: 8px 6px 14px -2px rgba(0, 0, 0, 0.25), -5px -5px 14px -1px #3a444e;
   padding: 20px;
+  background-color: transparent;
   border-radius: 20px;
   width: 100%;
   max-width: 456px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.toggle-sign-view-btn {
+  margin-bottom: 2rem;
+  position: relative;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 10rem;
+  padding: 0.5rem 1rem 0.5rem 1.5rem;
+  border-radius: 45px;
+  color: rgb(171, 170, 151);
+  background-color: transparent;
+  box-shadow: inset 8px 6px 14px -2px rgba(0, 0, 0, 0.25),
+    inset -5px -5px 14px -1px #3a444e;
+  z-index: 1;
+}
+.toggle-sign-view-btn::before {
+  position: absolute;
+  content: '';
+  inset: 0;
+  width: 50%;
+  border-radius: 45px;
+  background: linear-gradient(rgb(71, 88, 91), rgb(38, 48, 58));
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+.toggle-signup::before {
+  transform: translateX(100%);
+  background: linear-gradient(rgb(111, 113, 129), rgb(49, 54, 65));
+}
+.signup-span {
+  color: rgb(4, 4, 4);
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .login-heading {
-  font-family: 'Lobster';
   font-size: 1.25rem;
-  font-weight: 500;
+  font-family: 'Stick No Bills';
+  text-align: center;
+  letter-spacing: 0.4rem;
+  font-weight: 800;
+  background-clip: text;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.63) 0%,
+    rgba(12, 38, 46, 0.384) 80%
+  );
   background: -webkit-linear-gradient(
-    left,
-    #cf006e 56%,
-    #1472ff 56%,
-    #ff5e36 100%
+    (180deg, rgba(0, 0, 0, 0.63) 0%, rgba(12, 38, 46, 0.358) 100%)
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -59,8 +103,8 @@
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
-  font-weight: 700;
-  color: #262626;
+  font-weight: 400;
+  color: #d9d9d9;
 }
 
 .username-input-field,
@@ -68,10 +112,11 @@
   font-size: 14px;
   height: 40px;
   border: none;
-  background-color: #eeeeee;
-  box-shadow: 5px 5px 10px 1px rgba(7, 7, 7, 0.08), -5px -5px 10px 1px white;
-  color: #262626;
-  border-radius: 15px;
+  background-color: transparent;
+  box-shadow: inset 8px 6px 14px -2px rgba(0, 0, 0, 0.25),
+    inset -9px -9px 14px -1px #3a444e;
+  color: #b9b7b7;
+  border-radius: 10px;
   margin-top: 5px;
   padding: 8px 16px 8px 16px;
   outline: none;
@@ -80,15 +125,52 @@
 .login-button {
   font-weight: bold;
   font-size: 14px;
-  color: #4094ef;
+  color: #b7b5b5;
   margin-top: 25px;
   margin-bottom: 2px;
-  background-color: rgb(245, 245, 245);
-  box-shadow: 5px 5px 10px 1px rgba(7, 7, 7, 0.08), -5px -5px 10px 1px white;
+  background-color: transparent;
+  box-shadow: 8px 6px 14px -2px rgba(0, 0, 0, 0.25), -9px -9px 14px -1px #3a444e;
   border-radius: 20px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 2rem;
   border: none;
   outline: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+.login-button:hover {
+  transform: scale(1.1);
+}
+
+.signup-instead {
+  color: #b7b5b5;
+  margin-bottom: 1rem;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.radio-field {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.radio-inputs {
+  height: 15px;
+  width: 15px;
+}
+.gender-input-label {
+  color: #b7b5b5;
+  font-size: 12px;
+}
+
+.signup-instead span {
+  text-decoration: underline;
+  color: #528096;
   cursor: pointer;
 }
 
@@ -108,7 +190,7 @@
   }
   .login-responsive-container {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .login-image {
     display: block;
@@ -116,12 +198,11 @@
     max-width: 524px;
     flex-shrink: 1;
     margin-right: 20px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
   }
   .form-container {
-    background-color: rgb(245, 245, 245);
     max-width: 456px;
-    box-shadow: inset 10px 10px 10px 1px rgba(7, 7, 7, 0.08),
-      inset -10px -10px 10px 1px white;
     padding: 64px 48px 64px 48px;
   }
 }
