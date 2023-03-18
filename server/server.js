@@ -5,6 +5,7 @@ const { open } = require('sqlite')
 const sqlite3 = require('sqlite3')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const port = process.env.PORT || 8000
 
 const dbPath = path.join(__dirname, 'todo.db')
 const app = express()
@@ -17,8 +18,8 @@ let db = null
 const initializeDBAndServer = async () => {
   try {
     db = await open({ filename: dbPath, driver: sqlite3.Database })
-    app.listen(8000, () => {
-      console.log('Server Running at http://localhost:8000/')
+    app.listen(port, () => {
+      console.log(`Server Running at http://localhost:${port}/`)
     })
   } catch (e) {
     console.log(`DB Error: ${e.message}`)
