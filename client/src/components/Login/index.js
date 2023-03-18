@@ -51,7 +51,7 @@ class Login extends Component {
     const { username, password } = this.state
 
     const userDetails = { username, password }
-    const url = 'http://localhost:8000/login/'
+    const url = 'https://mayukh-nodeapi.onrender.com/login/'
     const options = {
       headers: {
         'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ class Login extends Component {
     const { name, gender, username, password } = this.state
 
     const userDetails = { username, password, name, gender }
-    const url = 'http://localhost:8000/register/'
+    const url = 'https://mayukh-nodeapi.onrender.com/register/'
     const options = {
       headers: {
         'Content-Type': 'application/json',

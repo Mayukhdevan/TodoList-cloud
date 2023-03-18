@@ -45,7 +45,10 @@ class Home extends Component {
         'Content-Type': 'application/json',
       },
     }
-    const response = await fetch('http://localhost:8000/', options)
+    const response = await fetch(
+      'https://mayukh-nodeapi.onrender.com/',
+      options
+    )
     if (response.ok) {
       const data = await response.json()
       this.updateState(data)
@@ -68,7 +71,7 @@ class Home extends Component {
       body: JSON.stringify(newTodo),
     }
 
-    await fetch('http://localhost:8000/add', options)
+    await fetch('https://mayukh-nodeapi.onrender.com/add', options)
   }
 
   onSave = e => {
@@ -96,7 +99,10 @@ class Home extends Component {
       method: 'DELETE',
     }
 
-    const response = await fetch(`http://localhost:8000/todo/${id}`, options)
+    const response = await fetch(
+      `https://mayukh-nodeapi.onrender.com/todo/${id}`,
+      options
+    )
     const data = await response.json()
 
     console.log(data)
@@ -123,7 +129,7 @@ class Home extends Component {
       body: JSON.stringify(updatedTaskDone),
     }
 
-    await fetch(`http://localhost:8000/todo/${id}`, options)
+    await fetch(`https://mayukh-nodeapi.onrender.com/todo/${id}`, options)
   }
 
   onCheckTodo = id => {
