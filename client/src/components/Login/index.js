@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import Cookies from 'js-cookie'
 import { Navigate } from 'react-router-dom'
+import { Dna, MutatingDots } from 'react-loader-spinner'
 
 import './index.css'
 
@@ -18,6 +19,7 @@ class Login extends Component {
       successMsg: '',
       signUp: false,
       redirect: false,
+      isLoading: false,
     }
   }
 
@@ -48,6 +50,7 @@ class Login extends Component {
 
   submitForm = async event => {
     event.preventDefault()
+    this.setState({ isLoading: true })
     const { username, password } = this.state
 
     const userDetails = { username, password }
@@ -61,6 +64,7 @@ class Login extends Component {
     }
     const response = await fetch(url, options)
     const data = await response.json()
+    this.setState({ isLoading: false })
     if (response.ok === true) {
       this.onSubmitSuccess(data.jwtToken)
     } else {
@@ -124,7 +128,6 @@ class Login extends Component {
 
   handleSignUp = data => {
     const msg = data.message
-    console.log(msg)
 
     this.setState({
       showSubmitError: false,
@@ -136,6 +139,7 @@ class Login extends Component {
 
   registerUser = async event => {
     event.preventDefault()
+    this.setState({ isLoading: true })
     const { name, gender, username, password } = this.state
 
     const userDetails = { username, password, name, gender }
@@ -149,6 +153,7 @@ class Login extends Component {
     }
     const response = await fetch(url, options)
     const data = await response.json()
+    this.setState({ isLoading: false })
     if (response.ok === true) {
       this.handleSignUp(data)
     } else {
@@ -157,10 +162,13 @@ class Login extends Component {
   }
 
   renderSignUp = () => {
-    const { showSubmitError, errorMsg, showSubmitSuccess, successMsg } =
-      this.state
-
-    console.log(showSubmitSuccess)
+    const {
+      showSubmitError,
+      errorMsg,
+      showSubmitSuccess,
+      successMsg,
+      isLoading,
+    } = this.state
 
     return (
       <form className='form' onSubmit={this.registerUser}>
@@ -196,8 +204,8 @@ class Login extends Component {
             </label>
           </div>
         </div>
-        <button type='submit' className='login-button'>
-          Sign Up
+        <button type='submit' className='login-button' disabled={isLoading}>
+          {isLoading ? this.renderLoader() : 'Sign Up'}
         </button>
         <p className='signup-instead'>
           Already have an account?{' '}
@@ -210,15 +218,15 @@ class Login extends Component {
   }
 
   renderSignIn = () => {
-    const { showSubmitError, errorMsg } = this.state
+    const { showSubmitError, errorMsg, isLoading } = this.state
 
     return (
       <form className='form' onSubmit={this.submitForm}>
         <h1 className='login-heading'>TODO LIST</h1>
         <div className='input-container'>{this.renderUsernameField()}</div>
         <div className='input-container'>{this.renderPasswordField()}</div>
-        <button type='submit' className='login-button'>
-          Login
+        <button type='submit' className='login-button' disabled={isLoading}>
+          {isLoading ? this.renderLoader() : 'Login'}
         </button>
         <p className='signup-instead'>
           Don't have an account?{' '}
@@ -231,6 +239,19 @@ class Login extends Component {
 
   toggleSignView = () =>
     this.setState(prevState => ({ signUp: !prevState.signUp }))
+
+  renderLoader = () => (
+    <div style={{ position: 'relative' }}>
+      <Dna
+        visible={true}
+        height='60'
+        width='60'
+        ariaLabel='dna-loading'
+        wrapperStyle={{}}
+        wrapperClass='dna-wrapper'
+      />
+    </div>
+  )
 
   render() {
     const { signUp } = this.state
