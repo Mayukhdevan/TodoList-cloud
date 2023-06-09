@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import Cookies from 'js-cookie'
 import { Navigate } from 'react-router-dom'
-import { Dna, MutatingDots } from 'react-loader-spinner'
+import { Dna } from 'react-loader-spinner'
 
 import './index.css'
 
